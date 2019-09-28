@@ -8,15 +8,12 @@ import (
 	"net"
 	"os"
 	"sync"
-	"time"
 )
 
 var host = flag.String("host", "", "A host host name of the Go engine")
 
 func main() {
 	flag.Parse()
-
-	time.Sleep(5 * time.Second)
 
 	dest := fmt.Sprintf("%s:6000", *host)
 	conn, err := net.Dial("tcp", dest)
@@ -37,8 +34,7 @@ func main() {
 	}()
 
 	go func() {
-		_, err :=
-		go io.Copy(conn, os.Stdin)
+		_, err := io.Copy(conn, os.Stdin)
 		if err != nil {
 			log.Fatal(err)
 			wg.Done()
