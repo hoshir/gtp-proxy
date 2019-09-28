@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var host = flag.String("host", "", "A host")
+var host = flag.String("host", "", "A host host name of the Go engine")
 
 func main() {
 	flag.Parse()
@@ -28,11 +28,22 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
-	// Receive loop
-	go io.Copy(os.Stdout, conn)
+	go func() {
+		_, err := io.Copy(os.Stdout, conn)
+		if err != nil {
+			log.Fatal(err)
+			wg.Done()
+		}
+	}()
 
-	// Send loop
-	go io.Copy(conn, os.Stdin)
+	go func() {
+		_, err :=
+		go io.Copy(conn, os.Stdin)
+		if err != nil {
+			log.Fatal(err)
+			wg.Done()
+		}
+	}()
 
 	wg.Wait()
 }
